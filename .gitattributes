@@ -1,0 +1,2 @@
+# Keep formatter checks consistent between Windows workspaces and Linux CI.
+* text=auto eol=lf

@@ -1,0 +1,99 @@
+{
+  "name": "@rajatnagda45/agent-town",
+  "version": "0.5.0",
+  "description": "Pixel-style AI Agent collaboration community — visualize your agents working in a pixel art office",
+  "license": "MIT",
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "bin": {
+    "agent-town": "bin/agent-town.mjs"
+  },
+  "files": [
+    "bin/",
+    ".next/standalone/"
+  ],
+  "scripts": {
+    "dev": "tsx watch --include \"./lib/**/*.mjs\" server.ts",
+    "dev:next": "next dev",
+    "build": "next build",
+    "start": "node --import tsx -e \"process.env.NODE_ENV='production'; import('./server.ts')\"",
+    "lint": "eslint",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest --run",
+    "contracts:check": "node --env-file-if-exists=.env.local scripts/audit-contracts.mjs",
+    "sponsors:config": "node --env-file-if-exists=.env.local scripts/check-sponsor-config.mjs",
+    "nightshift:check": "node --env-file-if-exists=.env.local scripts/check-nightshift.mjs",
+    "nightshift:queue:check": "node --env-file-if-exists=.env.local scripts/check-nightshift-queue.mjs",
+    "voice:check": "node scripts/check-voice.mjs",
+    "voice:check:live": "node scripts/check-voice.mjs",
+    "chat:check": "pnpm phase3:check",
+    "phase2:check": "node scripts/prepare-package.mjs && node scripts/check-phase2.mjs",
+    "phase3:check": "node scripts/prepare-package.mjs && node scripts/check-phase2.mjs",
+    "release:check": "pnpm format:check && pnpm lint && pnpm typecheck && pnpm test && pnpm build && pnpm phase3:check && node scripts/package-release.mjs && node scripts/check-release-archive.mjs",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky",
+    "prepublishOnly": "next build && node scripts/prepare-package.mjs",
+    "office:check": "node scripts/check-office.mjs",
+    "office:life": "node scripts/check-office-life.mjs",
+    "ui:check": "node scripts/check-ui.mjs",
+    "ui:voice": "node scripts/check-ui-voice.mjs",
+    "ui:product": "node scripts/check-product-ui.mjs",
+    "hmem:conformance": "node scripts/hmem-conformance.mjs",
+    "supplier:demo": "node scripts/supplier-demo.mjs",
+    "hmem:build": "node scripts/build-hmem.mjs"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,mts,js,mjs,css}": [
+      "prettier --write"
+    ]
+  },
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "keywords": [
+    "agent",
+    "ai",
+    "pixel-art",
+    "collaboration",
+    "visualization",
+    "phaser",
+    "nextjs"
+  ],
+  "dependencies": {
+    "@google/genai": "^2.31.0",
+    "ajv": "8.20.0",
+    "three": "^0.186.1",
+    "ws": "^8.22.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tanstack/react-virtual": "^3.14.23",
+    "@testing-library/react": "^16.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@types/three": "^0.186.0",
+    "@types/ws": "^8.18.2",
+    "eslint": "^9.39.5",
+    "eslint-config-next": "16.4.3",
+    "husky": "^9.1.7",
+    "jsdom": "^30.1.3",
+    "lint-staged": "^15.5.2",
+    "lucide-react": "^0.576.0",
+    "next": "16.4.3",
+    "phaser": "^3.90.0",
+    "prettier": "^3.9.10",
+    "puppeteer": "^25.16.0",
+    "react": "19.2.3",
+    "react-dom": "19.2.3",
+    "tailwindcss": "^4.3.3",
+    "tsx": "^4.23.15",
+    "typescript": "^5.9.3",
+    "vite": "^7.3.7",
+    "vitest": "^5.0.5"
+  },
+  "packageManager": "pnpm@10.20.0"
+}
