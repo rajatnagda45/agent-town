@@ -1,0 +1,7 @@
+.next/
+out/
+node_modules/
+.pnpm-store/
+public/
+pnpm-lock.yaml
+lib/vendor/
