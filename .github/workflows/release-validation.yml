@@ -1,0 +1,93 @@
+name: Release validation
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: release-validation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    env:
+      PUPPETEER_SKIP_DOWNLOAD: "true"
+      AGENT_TOWN_ALLOW_PAID_VOICE_TESTS: "0"
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - name: Check formatting
+        run: pnpm format:check
+
+      - name: Lint
+        run: pnpm lint
+
+      - name: Type check
+        run: pnpm typecheck
+
+      - name: Build
+        run: pnpm build
+
+      - name: Test
+        run: pnpm test
+
+      - name: Set up Chrome for browser checks
+        id: chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: stable
+          install-dependencies: true
+
+      - name: Mocked release gate (packaged startup, cross-device and voice browser checks)
+        run: pnpm phase3:check
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          AGENT_TOWN_BROWSER_NO_SANDBOX: "1"
+
+      - name: Prepare validated local release package
+        run: node scripts/package-release.mjs
+
+      - name: Validate extracted release archive
+        run: node scripts/check-release-archive.mjs
+        env:
+          PUPPETEER_EXECUTABLE_PATH: ${{ steps.chrome.outputs.chrome-path }}
+          AGENT_TOWN_BROWSER_NO_SANDBOX: "1"
+
+      - name: Stage local release package for upload
+        run: mkdir -p ci-artifacts/release && cp ../artifacts/agent-town-release/* ci-artifacts/release/
+
+      - name: Upload local release package
+        uses: actions/upload-artifact@v4
+        with:
+          name: agent-town-local-release-node22
+          path: ci-artifacts/release/*
+          if-no-files-found: error
+
+      - name: Stage browser screenshots for upload
+        if: always()
+        run: |
+          mkdir -p ci-artifacts/screenshots
+          if [ -d ../artifacts ]; then
+            find ../artifacts -maxdepth 1 -type f -name '*.png' -exec cp {} ci-artifacts/screenshots/ \;
+          fi
+
+      - name: Upload browser screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-checks
+          path: ci-artifacts/screenshots/*.png
+          if-no-files-found: ignore
+
+      - name: Audit dependencies
+        run: pnpm audit --audit-level=high
