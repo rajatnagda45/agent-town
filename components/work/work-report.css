@@ -1,0 +1,60 @@
+.work-report-page {
+  min-height: 100vh;
+  background: var(--pixel-bg);
+  color: var(--pixel-text);
+  padding: 24px 16px 48px;
+  font-family: var(--pixel-font-chat);
+}
+.work-report-page > a {
+  color: var(--pixel-accent);
+}
+.work-report {
+  max-width: 920px;
+  margin: 16px auto 0;
+  display: grid;
+  gap: 16px;
+}
+.work-report header,
+.work-report section {
+  background: var(--pixel-panel);
+  border: 1px solid var(--pixel-border);
+  border-radius: var(--pixel-radius);
+  padding: 16px;
+}
+.work-report h1 {
+  font-family: var(--pixel-font);
+  font-size: 1.4rem;
+  margin: 4px 0 8px;
+}
+.work-report h2 {
+  font-family: var(--pixel-font);
+  font-size: 1rem;
+  color: var(--pixel-accent);
+  margin: 0 0 8px;
+}
+.work-report__kicker,
+.work-report small {
+  color: var(--pixel-muted);
+}
+.work-report ul,
+.work-report ol {
+  padding-left: 20px;
+  display: grid;
+  gap: 6px;
+}
+.work-report a {
+  color: var(--pixel-accent);
+  overflow-wrap: anywhere;
+}
+.work-report button {
+  margin-top: 8px;
+  background: var(--pixel-accent);
+  color: var(--pixel-bg);
+  border: 0;
+  border-radius: var(--pixel-radius-sm);
+  padding: 6px 12px;
+  cursor: pointer;
+}
+.work-report [role="alert"] {
+  color: var(--pixel-red);
+}
