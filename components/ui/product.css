@@ -1,0 +1,184 @@
+.office-app {
+  --ui-bg: #0c1315;
+  --ui-surface: #141e20;
+  --ui-raised: #1c2729;
+  --ui-border: #c3d4ce18;
+  --ui-text: #e4ebe6;
+  --ui-muted: #a0b2ab;
+  --ui-accent: #dfb874;
+  --ui-success: #83caaa;
+  --ui-warning: #dfbd7b;
+  --ui-danger: #efaaa0;
+  --ui-radius: 10px;
+  --ui-space: 8px;
+  --ui-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ui-duration: 150ms;
+  --ui-surface-hover: #202b2e;
+  --ui-elevated: #1e282b;
+  --ui-accent-soft: #d8af6820;
+  --ui-info: #9cc7de;
+  --ui-shadow: 0 24px 70px #0007;
+  --ui-space-1: 4px;
+  --ui-space-2: 8px;
+  --ui-space-3: 12px;
+  --ui-space-4: 16px;
+  --ui-space-6: 24px;
+}
+.office-app :is(button, a, input, textarea, select):focus-visible {
+  outline: 2px solid var(--ui-accent);
+  outline-offset: 3px;
+}
+.office-app .pixel-button {
+  border-radius: var(--ui-radius);
+  transition:
+    background var(--ui-duration) var(--ui-ease),
+    border-color var(--ui-duration) var(--ui-ease);
+}
+.office-app .pixel-button:not(:disabled):hover {
+  border-color: var(--ui-accent);
+}
+.office-app :is(.ui-copy, .ui-status) {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 11px/1.5 var(--pixel-font-chat);
+}
+.office-app .ui-copy {
+  border: 0;
+  border-radius: 5px;
+  padding: 3px 6px;
+  color: var(--ui-muted);
+  background: transparent;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.office-app .ui-copy:hover {
+  color: var(--ui-text);
+  background: #ffffff0b;
+}
+.office-app .ui-status {
+  border: 1px solid var(--ui-border);
+  padding: 3px 7px;
+  border-radius: 6px;
+  text-transform: capitalize;
+  color: var(--ui-muted);
+}
+.office-app .ui-status--success {
+  color: var(--ui-success);
+  background: #83caaa09;
+}
+.office-app .ui-status--danger {
+  color: var(--ui-danger);
+  background: #efaaa009;
+}
+.office-app .ui-status--warning {
+  color: var(--ui-warning);
+  background: #dfbd7b09;
+}
+.office-app .ui-status--active {
+  color: #a7c7e2;
+  background: #a7c7e209;
+}
+.office-app .ui-markdown {
+  overflow-wrap: anywhere;
+  line-height: 1.75;
+}
+.office-app .ui-markdown p {
+  margin: 0 0 12px;
+  white-space: pre-wrap;
+}
+.office-app .ui-markdown > :last-child {
+  margin-bottom: 0;
+}
+.office-app .ui-markdown :is(h2, h3, h4, h5, h6) {
+  line-height: 1.4;
+  font-weight: 650;
+  margin: 22px 0 10px;
+  color: var(--ui-text);
+}
+.office-app .ui-markdown h2 {
+  font-size: 18px;
+}
+.office-app .ui-markdown h3 {
+  font-size: 16px;
+}
+.office-app .ui-markdown :is(h4, h5, h6) {
+  font-size: 14px;
+}
+.office-app .ui-markdown :is(ul, ol) {
+  margin: 10px 0 16px;
+  padding-left: 24px;
+}
+.office-app .ui-markdown li {
+  margin: 5px 0;
+}
+.office-app .ui-markdown a {
+  color: #dfbf87;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.office-app .ui-markdown blockquote {
+  border-left: 2px solid #dfb87470;
+  margin: 12px 0;
+  padding: 6px 16px;
+  color: var(--ui-muted);
+}
+.office-app .ui-markdown :not(pre) > code {
+  background: #ffffff09;
+  border: 1px solid var(--ui-border);
+  border-radius: 4px;
+  padding: 1px 4px;
+  font-size: 0.9em;
+}
+.office-app .ui-code {
+  border: 1px solid var(--ui-border);
+  border-radius: 9px;
+  overflow: hidden;
+  margin: 14px 0;
+}
+.office-app .ui-code__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 12px;
+  background: #ffffff05;
+  font-size: 11px;
+  color: var(--ui-muted);
+}
+.office-app .ui-code pre {
+  margin: 0;
+  border: 0;
+  border-radius: 0;
+  padding: 14px;
+  overflow: auto;
+  background: #080f12;
+  white-space: pre;
+  max-width: 100%;
+}
+.office-app .hud-chat__header {
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.office-app .chat-message-time {
+  margin-left: auto;
+  font-variant-numeric: tabular-nums;
+  color: var(--ui-muted);
+}
+.office-app .hud-chat__content {
+  white-space: pre-wrap;
+}
+.office-app .ui-markdown {
+  white-space: normal;
+}
+.office-app summary {
+  cursor: pointer;
+}
+@media (prefers-reduced-motion: reduce) {
+  .office-app *,
+  .office-app *::before,
+  .office-app *::after {
+    scroll-behavior: auto !important;
+    transition: none !important;
+    animation: none !important;
+  }
+}
