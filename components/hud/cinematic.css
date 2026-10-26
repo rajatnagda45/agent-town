@@ -1,0 +1,966 @@
+/* Warm brass, smoked glass, and quieter typography shared by every application panel. */
+.office-app {
+  --pixel-bg: #11191a;
+  --pixel-panel: #192122;
+  --pixel-panel-fill: #273030;
+  --pixel-border: #675b454f;
+  --pixel-border-light: #b5955e;
+  --pixel-accent: #dcaf63;
+  --pixel-accent-hover: #f0c681;
+  --pixel-text: #eae4d8;
+  --pixel-muted: #aaa99c;
+  --pixel-green: #40d89b;
+  --pixel-radius: 9px;
+  --pixel-radius-sm: 6px;
+  --pixel-radius-lg: 12px;
+}
+.office-app .office-world {
+  right: 0;
+}
+.office-app .layout-top {
+  padding: 12px 14px;
+  background: linear-gradient(#0c1214b0, transparent);
+}
+.office-app .layout-topbar__title,
+.office-app .layout-topbar__tools,
+.office-app .topbar-agent-pill,
+.office-app .hud-chat-dock__btn,
+.office-app .hud-pill {
+  background: linear-gradient(145deg, #252b2ce8, #11191af2);
+  border: 1px solid #9e825347;
+  box-shadow:
+    inset 0 1px 0 #e3c69309,
+    0 4px 16px #0004;
+  backdrop-filter: blur(12px);
+}
+.office-app .layout-topbar__title {
+  color: #e8b96a;
+  border-radius: 9px;
+}
+.office-app .layout-topbar__logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.office-app .topbar-agent-pill {
+  padding: 6px 10px 6px 6px;
+  gap: 10px;
+  border-radius: 8px;
+}
+.office-app .topbar-agent-pill__name {
+  font: 600 12px var(--pixel-font-chat);
+  letter-spacing: 0.1px;
+}
+.office-app .topbar-agent-pill__identity {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  gap: 4px;
+  flex: 1;
+}
+.office-app .topbar-agent-pill__activity {
+  font: 10px var(--pixel-font-chat);
+  color: #adae9e;
+}
+.office-app .topbar-agent-pill .pixel-dot {
+  width: 7px;
+  height: 7px;
+}
+.office-app .topbar-agent-pill--active {
+  border-color: #c3a36388;
+}
+.office-app .topbar-agent-pill--talking {
+  outline: 1px solid #86bdcf;
+  outline-offset: 1px;
+}
+.office-app .topbar-tool-btn {
+  color: #d3b997;
+  border-radius: 5px;
+  background: #a38a6610;
+}
+.office-app .topbar-tool-btn:hover,
+.office-app .topbar-tool-btn--active {
+  background: #c3995224;
+  color: #f0c57d;
+}
+.office-app .hud-flyout,
+.office-app .pixel-panel {
+  background: linear-gradient(145deg, #253030f5, #141c1ef8);
+  border: 1px solid #a58c5c66;
+  box-shadow:
+    0 18px 65px #0007,
+    inset 0 1px 0 #f2d79f0c;
+  backdrop-filter: blur(24px);
+  color: var(--pixel-text);
+}
+.office-app .hud-flyout__header {
+  padding: 16px 18px 13px;
+  border-bottom: 1px solid #b5965e30;
+}
+.office-app .hud-flyout__title {
+  font: 600 12px var(--pixel-font-chat);
+}
+.office-app .hud-flyout__subtitle {
+  font: 11px var(--pixel-font-chat);
+  color: #a1a99f;
+  margin-top: 7px;
+}
+.office-app .hud-flyout__body {
+  scrollbar-width: thin;
+  scrollbar-color: #796b4c #172022;
+}
+.office-app .pixel-button {
+  border-width: 1px;
+  padding: 10px 15px;
+  font: 600 10px var(--pixel-font-chat);
+  letter-spacing: 0.5px;
+  box-shadow: inset 0 1px 0 #fff1;
+}
+.office-app .pixel-button--primary {
+  background: linear-gradient(135deg, #e1b56e, #bd914a);
+  border-color: #edca8c;
+  color: #22251f;
+}
+.office-app .pixel-input,
+.office-app input,
+.office-app select,
+.office-app textarea {
+  background-color: #10191bc9;
+  border-color: #7b74544d;
+  color: #ebe5d7;
+}
+.office-app :is(input, select, textarea):focus-visible {
+  outline: 1px solid #d1ab6b;
+  outline-offset: 2px;
+}
+.office-app .hud-chat__bubble {
+  border: 1px solid #a58c5c26;
+  background: #10191b77;
+}
+.office-app .hud-chat__bubble--user {
+  border-color: #b894514d;
+}
+.office-app .hud-chat__role {
+  font: 600 11px var(--pixel-font-chat);
+  color: #dfbd7c;
+}
+.office-app .hud-chat__content {
+  line-height: 1.75;
+}
+.office-app .chat-mode-switch {
+  background: #0e171a88;
+  padding: 4px;
+  border: 1px solid #9e825324;
+}
+.office-app .layout-bottom {
+  padding: 12px 14px;
+  background: linear-gradient(transparent, #0d13164d);
+}
+.office-app .hud-chat-dock__btn {
+  border-radius: 9px;
+  padding: 8px 15px;
+}
+.office-app .hud-chat-dock__label {
+  font: 600 12px var(--pixel-font-chat);
+  letter-spacing: 1px;
+}
+.office-app .hud-pill {
+  border-radius: 7px;
+}
+.office-app .pixel-dot--green {
+  background: #39dc9e;
+  box-shadow: 0 0 7px #39dc9e55;
+}
+.office-app .pixel-dot--gray {
+  background: #77837c;
+  box-shadow: none;
+}
+.office-app .hud-topright-flyout,
+.office-app .hud-chat-dock__panel {
+  width: 350px;
+}
+.office-app .hud-chat-dock__panel .hud-flyout {
+  width: 100%;
+}
+@media (min-width: 1280px) {
+  .office-app:has(.hud-flyout) .office-world {
+    right: 370px;
+  }
+}
+@media (max-width: 1279px) {
+  .office-app:has(.hud-flyout) .office-world {
+    bottom: 46dvh;
+  }
+  .office-app .topbar-agent-pill {
+    min-width: 100px;
+    gap: 5px;
+    padding-right: 7px;
+  }
+  .office-app .topbar-agent-pill__name {
+    font-size: 10px;
+  }
+  .office-app .topbar-agent-pill__activity {
+    font-size: 9px;
+  }
+  .office-app .layout-topbar__logo {
+    font-size: 9px;
+    letter-spacing: 1px;
+  }
+}
+@media (max-width: 760px) {
+  .office-app .layout-top {
+    padding: 8px;
+    gap: 7px;
+    flex-wrap: wrap;
+  }
+  .office-app .layout-topbar__title {
+    padding: 8px;
+  }
+  .office-app .layout-topbar__agents {
+    order: 3;
+    position: static;
+    transform: none;
+    width: 100%;
+    justify-content: center;
+  }
+  .office-app .topbar-agent-pill {
+    min-width: 0;
+    flex: 1;
+    max-width: 135px;
+  }
+  .office-app .topbar-agent-pill__avatar {
+    width: 24px;
+    height: 28px;
+  }
+  .office-app .layout-topbar__tools {
+    margin-left: auto;
+  }
+  .office-app .hud-topright-flyout,
+  .office-app .hud-chat-dock__panel {
+    width: min(350px, calc(100vw - 20px));
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .office-app * {
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Final interaction and reading hierarchy. */
+.office-app {
+  --pixel-font-chat: var(--font-geist-sans, Arial), sans-serif;
+}
+.office-app .layout-topbar__logo {
+  font-size: 11px;
+  letter-spacing: 1.5px;
+}
+.office-app .layout-topbar__title {
+  padding: 10px 14px;
+}
+.office-app .topbar-agent-pill {
+  min-width: 128px;
+  transition:
+    border-color 0.16s,
+    background 0.16s,
+    transform 0.16s;
+}
+.office-app .topbar-agent-pill:hover {
+  border-color: #c5a56c99;
+  transform: translateY(-1px);
+}
+.office-app .topbar-agent-pill:active {
+  transform: translateY(0);
+}
+.office-app :is(button, select, input, textarea):focus-visible {
+  outline: 2px solid #e8bd79;
+  outline-offset: 3px;
+}
+.office-app button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+.office-app .topbar-agent-pill__activity {
+  font-size: 11px;
+  line-height: 1.3;
+}
+.office-app .hud-chat-dock__panel {
+  box-shadow: 0 12px 45px #0006;
+  animation: office-panel-in 0.18s ease-out;
+}
+.office-app .chat-message {
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.office-app .chat-voice-state {
+  font-size: 12px;
+  padding: 4px 0 8px;
+  color: #d8c7a4;
+}
+.office-app .chat-voice-state time {
+  font-variant-numeric: tabular-nums;
+  color: #aab4af;
+}
+.office-app .chat-voice-hint {
+  font-size: 11px;
+  line-height: 1.55;
+  color: #aab4af;
+}
+.office-app .chat-voice-buttons .pixel-button {
+  min-height: 42px;
+}
+.office-app .chat-end-call {
+  background: #713f3326;
+  border-color: #bf7d6266;
+}
+.office-app .hud-pill {
+  font-size: 11px;
+  color: #c7ceca;
+}
+.office-profile-facts {
+  display: grid;
+  gap: 9px;
+  padding: 12px;
+  margin: 12px 0 6px;
+  background: #0b121450;
+  border-radius: 8px;
+}
+.office-profile-facts > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: 12px;
+}
+.office-profile-facts dt {
+  color: #a5b1ac;
+}
+.office-profile-facts dd {
+  margin: 0;
+  color: #e8ddc8;
+  text-align: right;
+}
+.office-ambient-note {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #8c9b95;
+  margin: 6px 0 16px;
+}
+@keyframes office-panel-in {
+  from {
+    opacity: 0;
+    transform: translateY(7px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .office-app *,
+  .office-app *::before,
+  .office-app *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+.office-app .hud-chat__bubble {
+  border-radius: 10px;
+  padding: 12px 14px;
+  line-height: 1.6;
+}
+.office-app .hud-chat__content {
+  font-size: 13px;
+  overflow-wrap: anywhere;
+}
+.office-app .hud-chat__header {
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+.office-app .hud-chat__role {
+  font-size: 12px;
+}
+.chat-message-time {
+  margin-left: auto;
+  color: #8d9e96;
+  font-size: 10px;
+  font-variant-numeric: tabular-nums;
+}
+.office-app .hud-chat__codeblock {
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 11px;
+}
+@media (max-width: 760px) {
+  .office-app .layout-topbar__title {
+    padding: 8px 9px;
+  }
+  .office-app .layout-topbar__logo {
+    font-size: 8px;
+    letter-spacing: 1px;
+    gap: 6px;
+  }
+  .office-app .layout-topbar__logo svg {
+    width: 19px;
+  }
+  .office-app .layout-topbar__agents {
+    justify-content: flex-start;
+  }
+  .office-app .topbar-agent-pill {
+    min-width: 0;
+    flex: 0 0 calc((100% - 12px) / 4);
+    max-width: none;
+    gap: 4px;
+    padding: 5px 4px;
+  }
+  .office-app .topbar-agent-pill__avatar {
+    width: 20px;
+    height: 24px;
+  }
+  .office-app .topbar-agent-pill__name {
+    font-size: 10px;
+  }
+  .office-app .topbar-agent-pill__identity {
+    overflow: hidden;
+  }
+  .office-app .topbar-agent-pill__activity {
+    font-size: 8px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+  }
+  .office-app .topbar-agent-pill .pixel-dot {
+    width: 4px;
+    height: 4px;
+    flex-shrink: 0;
+  }
+}
+
+/* Product tokens are centralized in components/ui/product.css. */
+.office-app :is(.hud-overlay, .pixel-panel, .office-view-controls, .ui-confirm) {
+  font-family: var(--pixel-font-chat);
+  font-size: 13px;
+  line-height: 1.5;
+}
+.office-app :is(.pixel-button, .pixel-icon-btn) {
+  min-height: 36px;
+  border-width: 1px;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  transition:
+    background var(--ui-duration),
+    border-color var(--ui-duration),
+    box-shadow var(--ui-duration);
+}
+.office-app .pixel-icon-btn {
+  min-width: 36px;
+  background: var(--ui-surface-hover);
+}
+.office-app .pixel-input {
+  min-height: 40px;
+  border-radius: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.office-app .hud-panel__label,
+.ui-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.8px;
+  color: var(--pixel-muted);
+  text-transform: uppercase;
+}
+.office-app .hud-flyout {
+  border-radius: 16px;
+  box-shadow: var(--ui-shadow);
+  background: linear-gradient(150deg, #202b2bf8, #141d20fa);
+}
+.office-app .hud-flyout__title {
+  font-size: 15px;
+  letter-spacing: -0.2px;
+  color: var(--pixel-text);
+  text-transform: none;
+}
+.office-app .hud-flyout__subtitle {
+  font-size: 12px;
+  line-height: 1.5;
+}
+.office-app .hud-flyout__body {
+  padding: 16px;
+}
+.office-app .hud-flyout__body--chat {
+  padding: 0;
+}
+.office-app .hud-empty {
+  font: 13px/1.6 var(--pixel-font-chat);
+  color: var(--pixel-muted);
+  padding: 20px 12px;
+}
+.office-app .hud-status {
+  font: 500 10px/1.5 var(--pixel-font-chat);
+  border-radius: 20px;
+  padding: 3px 8px;
+  min-width: auto;
+}
+.office-app .hud-list__item,
+.office-app .hud-workers__item {
+  background: #0d16184d;
+  border: 1px solid var(--pixel-border);
+  border-radius: 10px;
+  padding: 12px;
+  margin-bottom: 8px;
+}
+.office-app .hud-list__title,
+.office-app .hud-workers__task {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.office-app .hud-list__top,
+.office-app .hud-workers__top {
+  font-size: 12px;
+  gap: 10px;
+  margin-bottom: 8px;
+}
+.office-app .hud-chat__system {
+  border: 0;
+  background: transparent;
+  padding: 7px 12px;
+  font-size: 11px;
+  color: var(--pixel-muted);
+  text-align: center;
+}
+.office-app .hud-chat__bubble--assistant {
+  background: transparent;
+  border-color: transparent;
+}
+.office-app .hud-chat__bubble--user {
+  background: var(--ui-accent-soft);
+}
+.office-app .chat-mode-switch button {
+  min-height: 36px;
+  border-radius: 6px;
+  font-size: 12px;
+}
+.office-app .chat-mode-switch button[aria-pressed="true"] {
+  background: var(--ui-accent-soft);
+  color: #f2d5a5;
+  border-color: #c7a16250;
+}
+.office-app .chat-agent-row {
+  padding: 12px 0 0;
+}
+.office-app .chat-agent-identity select {
+  font-size: 13px;
+  min-height: 32px;
+  border-radius: 6px;
+  padding: 3px 8px;
+}
+.office-app .chat-agent-identity > span {
+  font-size: 11px;
+}
+.office-app .hud-chat-input-row {
+  padding: 12px;
+  gap: 10px;
+}
+.office-app .hud-chat-input-row textarea {
+  min-height: 48px !important;
+  height: 48px !important;
+  padding: 12px !important;
+}
+.office-app .hud-chat-input-row button {
+  width: 44px !important;
+  height: 48px !important;
+  background: var(--pixel-accent);
+  color: #172022;
+}
+.office-app .chat-voice-composer {
+  padding: 16px;
+  background: #09111430;
+}
+.office-app .obs-body {
+  gap: 14px;
+}
+.office-app .obs-section-label {
+  font-size: 11px;
+  letter-spacing: 0.7px;
+  margin: 10px 0 0;
+}
+.office-app .obs-timeline__item {
+  display: grid;
+  grid-template-columns: 16px 58px minmax(0, 1fr);
+  gap: 6px;
+  padding: 8px 0;
+  font-size: 12px;
+}
+.office-app .obs-history__item {
+  gap: 8px;
+  padding: 10px;
+  border-radius: 8px;
+}
+.office-app .obs-history__msg,
+.office-app .obs-task-card__msg {
+  font-size: 13px;
+  line-height: 1.6;
+}
+.office-app .obs-portrait-row {
+  margin: 0;
+}
+.office-app .office-profile-facts {
+  margin: 0;
+  padding: 14px;
+  gap: 12px;
+}
+.office-app .office-ambient-note {
+  margin: 0;
+  font-size: 11px;
+}
+.office-app .layout-bottombar {
+  border: 1px solid var(--pixel-border);
+  background: #121b1ee8;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 2px;
+}
+.office-app .hud-pill {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  backdrop-filter: none;
+  min-height: 30px;
+  padding: 5px 9px;
+}
+.office-app .hud-pill + .hud-pill {
+  border-left: 1px solid var(--pixel-border);
+  border-radius: 0;
+}
+.office-app .office-view-controls {
+  padding: 5px 8px;
+  border: 1px solid var(--pixel-border);
+  background: #121b1ee8;
+  border-radius: 10px;
+  font-size: 11px;
+  gap: 8px;
+}
+.office-app .office-view-controls :is(button, select) {
+  border: 1px solid var(--pixel-border);
+  background: var(--ui-surface-hover);
+  border-radius: 7px;
+  min-height: 32px;
+  padding: 5px 8px;
+  font: inherit;
+}
+.office-app .office-view-caption {
+  font-size: 9px;
+  letter-spacing: 1px;
+}
+.office-app .office-view-hint {
+  font-size: 10px;
+  color: var(--pixel-muted);
+}
+.office-app .layout-topbar__agents {
+  max-width: calc(100% - 470px);
+  overflow-x: auto;
+  scrollbar-width: thin;
+  padding: 3px;
+}
+.office-app .topbar-agent-pill {
+  flex-shrink: 0;
+}
+.office-app .topbar-agent-pill[aria-pressed="true"] {
+  border-color: var(--pixel-accent);
+  background: #3a3428e8;
+}
+.office-app .topbar-tool-btn {
+  width: 36px;
+  height: 36px;
+}
+.office-app .hud-chat-dock__btn {
+  min-height: 40px;
+}
+.ui-segmented {
+  display: inline-flex;
+  padding: 3px;
+  gap: 3px;
+  background: #0c1518;
+  border: 1px solid var(--pixel-border);
+  border-radius: 9px;
+}
+.ui-segmented button {
+  border: 1px solid transparent;
+  border-radius: 6px;
+  padding: 6px 14px;
+  min-height: 32px;
+  color: var(--pixel-muted);
+  font: inherit;
+  cursor: pointer;
+}
+.ui-segmented button[aria-pressed="true"] {
+  background: var(--ui-accent-soft);
+  border-color: #c7a16250;
+  color: var(--pixel-accent);
+}
+.ui-field-hint {
+  font-size: 12px;
+  color: var(--pixel-muted);
+  margin: 0;
+}
+.ui-error {
+  color: var(--ui-danger);
+  font-size: 12px;
+}
+.ui-confirm-overlay {
+  z-index: 110;
+}
+.ui-confirm {
+  width: min(420px, calc(100vw - 32px));
+  padding: 24px;
+  border: 1px solid var(--pixel-border);
+  border-radius: 16px;
+  background: var(--ui-elevated);
+  box-shadow: var(--ui-shadow);
+  color: var(--pixel-text);
+}
+.ui-confirm h2 {
+  margin: 0 0 10px;
+  font-size: 18px;
+  font-weight: 600;
+}
+.ui-confirm p {
+  color: var(--pixel-muted);
+  font-size: 13px;
+  margin-bottom: 22px;
+}
+.ui-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+.office-app .ui-button-danger {
+  border-color: #e78e7c66;
+  color: var(--ui-danger);
+  background: #9d4d3f25;
+}
+.office-app :is(.seat-manager, .hud-topright-flyout, .ui-confirm, .session-dropdown) {
+  animation: office-panel-in var(--ui-duration) var(--ui-ease);
+}
+.office-app .session-dropdown {
+  max-height: min(300px, 45dvh);
+  overflow: auto;
+  width: min(260px, calc(100vw - 40px));
+  background: var(--ui-elevated);
+  border: 1px solid var(--pixel-border);
+  border-radius: 10px;
+  box-shadow: var(--ui-shadow);
+  padding: 5px;
+}
+.office-app .session-dropdown__item {
+  font: 13px/1.5 var(--pixel-font-chat);
+  min-height: 48px;
+  padding: 8px 10px;
+  border-radius: 6px;
+}
+.office-app .session-dropdown__time {
+  font-size: 10px;
+  margin-top: 3px;
+}
+.office-app .session-dropdown__item--active {
+  background: var(--ui-accent-soft);
+  color: var(--pixel-accent);
+}
+@media (max-width: 1100px) {
+  .office-app .office-view-hint {
+    display: none;
+  }
+}
+@media (max-width: 760px) {
+  .office-app .layout-topbar__agents {
+    max-width: 100%;
+  }
+  .office-app .layout-bottombar {
+    max-width: calc(100vw - 100px);
+    flex-wrap: wrap;
+    gap: 0;
+  }
+  .office-app .hud-pill {
+    padding: 3px 6px;
+    font-size: 10px;
+    min-height: 24px;
+  }
+  .office-app .office-view-controls {
+    max-width: calc(100% - 20px);
+    flex-wrap: wrap;
+    padding: 4px;
+    gap: 4px;
+    bottom: 76px;
+  }
+  .office-app .office-view-caption {
+    display: none;
+  }
+  .office-app .office-view-controls :is(button, select) {
+    min-height: 32px;
+    font-size: 10px;
+  }
+  .office-app .office-setting {
+    gap: 4px;
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .office-app :is(.seat-manager, .hud-topright-flyout, .ui-confirm, .session-dropdown) {
+    animation: none;
+  }
+}
+.office-app .workspace-dialog {
+  font-size: 13px;
+  border-radius: 16px;
+  border-width: 1px;
+  max-height: 90dvh;
+  overflow-y: auto;
+}
+.office-app .workspace-dialog textarea {
+  min-height: 100px !important;
+}
+.office-app .hud-music-bar {
+  padding: 16px;
+  border-radius: 12px;
+  background: var(--ui-elevated);
+  border: 1px solid var(--pixel-border);
+}
+.office-app .hud-music-bar__slider {
+  min-height: 36px;
+  accent-color: var(--pixel-accent);
+}
+@media (max-width: 600px) {
+  .office-app .history-layout {
+    flex-direction: column;
+  }
+  .office-app .history-layout > div {
+    width: 100% !important;
+    min-width: 0;
+  }
+  .office-app .history-layout > div:first-child {
+    max-height: 120px !important;
+  }
+  .office-app .hud-chat-dock__panel {
+    max-height: calc(46dvh - 82px);
+  }
+  .office-app .hud-chat-dock__panel .hud-flyout {
+    max-height: calc(46dvh - 82px);
+  }
+  .office-app .hud-chat-dock__panel .hud-flyout__header {
+    padding: 10px 14px;
+  }
+  .office-app .hud-chat-dock__panel .hud-flyout__subtitle {
+    display: none;
+  }
+  .office-app .chat-conversation-tools {
+    padding: 8px 12px;
+  }
+  .office-app .chat-agent-row {
+    padding-top: 6px;
+  }
+  .office-app .chat-agent-portrait {
+    width: 30px;
+    height: 32px;
+  }
+  .office-app .chat-voice-composer {
+    padding: 10px 12px;
+  }
+  .office-app .chat-voice-hint {
+    margin: 6px 0 0;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 600px) {
+  .office-app .hud-chat-dock {
+    gap: 30px;
+  }
+  .office-app:has(.hud-flyout) .office-view-controls {
+    bottom: 40px;
+  }
+}
+
+/* Quiet telemetry strip underneath the primary office controls. */
+.office-app .layout-bottombar {
+  border: 0;
+  background: #10181bcc;
+  border-radius: 10px;
+  padding: 4px 7px;
+  gap: 5px;
+  box-shadow: none;
+  backdrop-filter: blur(12px);
+}
+.office-app .hud-pill {
+  font-size: 11px;
+  color: #97aaa1;
+  padding: 5px 7px;
+}
+.office-app .hud-pill + .hud-pill {
+  border: 0;
+}
+.office-app .hud-pill--connection {
+  color: #c2d3cb;
+}
+.office-app .hud-pill .pixel-dot {
+  width: 6px;
+  height: 6px;
+  box-shadow: none;
+}
+.office-app .hud-pill svg {
+  width: 13px;
+  height: 13px;
+  opacity: 0.65;
+}
+.office-app .hud-meter-inline {
+  background: transparent;
+  border: 0;
+  padding: 5px 8px;
+  gap: 8px;
+  font-size: 11px;
+  min-height: 30px;
+}
+.office-app .hud-meter-inline__label {
+  color: #97aaa1;
+  font: inherit;
+}
+.office-app .hud-meter-inline__bar {
+  width: 48px;
+  height: 4px;
+  background: #ffffff0b;
+  border: 0;
+  border-radius: 3px;
+  overflow: hidden;
+}
+.office-app .hud-meter-inline__bar > div {
+  opacity: 0.8;
+}
+.office-app .hud-meter-inline__value {
+  color: #bccac3;
+  font: 11px var(--pixel-font-chat);
+  font-variant-numeric: tabular-nums;
+}
+@media (max-width: 760px) {
+  .office-app .layout-bottombar {
+    gap: 1px;
+    padding: 3px;
+  }
+  .office-app .hud-pill,
+  .office-app .hud-meter-inline {
+    font-size: 9px;
+    padding: 3px 5px;
+    min-height: 22px;
+  }
+  .office-app .hud-meter-inline__bar {
+    width: 30px;
+  }
+  .office-app .hud-meter-inline__value {
+    font-size: 9px;
+  }
+}

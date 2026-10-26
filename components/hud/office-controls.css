@@ -1,0 +1,218 @@
+/* Application controls only: independent of the office renderer. */
+.office-app .office-controlbar {
+  position: absolute;
+  left: 20px;
+  bottom: 70px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px;
+  border: 1px solid #ffffff12;
+  border-radius: 14px;
+  background: #141c20ed;
+  box-shadow:
+    0 8px 30px #0004,
+    inset 0 1px #ffffff04;
+  backdrop-filter: blur(18px);
+  color: #d8dedb;
+  font: 12px/1.4 var(--pixel-font-chat);
+}
+.office-controlbar__identity {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0 11px;
+  color: #9caaa6;
+  font-size: 11px;
+  letter-spacing: 0.2px;
+}
+.office-controlbar__identity > span {
+  width: 5px;
+  height: 5px;
+  background: #d6af70;
+  border-radius: 50%;
+}
+.office-controlbar__group {
+  display: flex;
+  gap: 3px;
+  border-left: 1px solid #ffffff0d;
+  padding-left: 6px;
+}
+.office-app .office-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 34px;
+  padding: 0 10px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  color: #c7d0cc;
+  font: inherit;
+  cursor: pointer;
+  transition:
+    background 150ms,
+    color 150ms;
+  white-space: nowrap;
+}
+.office-control svg {
+  color: #8b9e98;
+  flex-shrink: 0;
+}
+.office-app .office-control:hover,
+.office-app .office-control[aria-expanded="true"] {
+  background: #ffffff09;
+  color: #f1dfbd;
+}
+.office-control[aria-expanded="true"] svg {
+  color: #dfb574;
+}
+.office-app .office-control--setting {
+  background: #ffffff04;
+}
+.office-app .office-control--help {
+  padding: 0 9px;
+}
+.office-control-menu {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 10px);
+  width: 290px;
+  max-width: calc(100vw - 32px);
+  padding: 10px;
+  border: 1px solid #ffffff18;
+  border-radius: 14px;
+  background: #1c2629;
+  box-shadow: 0 14px 48px #0008;
+  animation: office-panel-in 140ms ease-out;
+}
+.office-control-menu__heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 3px 6px 5px;
+  color: #edf0e9;
+  font-size: 13px;
+  font-weight: 600;
+}
+.office-control-menu__heading button {
+  display: grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  color: #a7b5b0;
+  background: transparent;
+  border: 0;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.office-control-menu p {
+  margin: 0 6px 10px;
+  font-size: 11px;
+  color: #91a19a;
+}
+.office-app .office-control-option {
+  width: 100%;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  text-align: left;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #c5d1ca;
+  border-radius: 9px;
+  padding: 10px;
+  cursor: pointer;
+  margin: 3px 0;
+  font: inherit;
+}
+.office-control-option > span {
+  flex: 1;
+}
+.office-control-option strong,
+.office-control-option small {
+  display: block;
+}
+.office-control-option strong {
+  font-size: 12px;
+  font-weight: 600;
+}
+.office-control-option small {
+  margin-top: 3px;
+  color: #99a9a1;
+  font-size: 11px;
+}
+.office-app .office-control-option:hover {
+  background: #ffffff07;
+}
+.office-app .office-control-option[aria-pressed="true"] {
+  background: #d7af6910;
+  border-color: #d7af692c;
+  color: #e8c58a;
+}
+.office-shortcuts {
+  margin: 0;
+  padding: 3px 6px;
+}
+.office-shortcuts > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 9px 0;
+}
+.office-shortcuts dt {
+  color: #a2b1aa;
+}
+.office-shortcuts dd {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  font-size: 11px;
+}
+.office-shortcuts kbd {
+  border: 1px solid #ffffff1c;
+  border-bottom-width: 2px;
+  background: #ffffff05;
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+@media (max-width: 760px) {
+  .office-app .office-controlbar {
+    left: 10px;
+    right: 10px;
+    bottom: 80px;
+    gap: 2px;
+    padding: 5px;
+    justify-content: space-between;
+  }
+  .office-controlbar__identity {
+    display: none;
+  }
+  .office-controlbar__group {
+    padding-left: 0;
+    border: 0;
+    gap: 1px;
+  }
+  .office-app .office-control {
+    padding: 0 7px;
+    gap: 5px;
+    font-size: 10px;
+    min-height: 36px;
+  }
+  .office-controlbar__group:first-of-type .office-control:first-child span {
+    display: none;
+  }
+  .office-control svg {
+    width: 14px;
+  }
+  .office-app:has(.hud-flyout) .office-controlbar {
+    bottom: 36px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .office-control-menu {
+    animation: none;
+  }
+}

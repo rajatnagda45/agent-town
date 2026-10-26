@@ -1,0 +1,119 @@
+.review-indicator {
+  position: absolute;
+  left: 16px;
+  bottom: 64px;
+  pointer-events: auto;
+  font-size: 10px;
+}
+.review-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: #050c18b8;
+  pointer-events: auto;
+}
+.review-dialog {
+  width: min(560px, 100%);
+  max-height: calc(100dvh - 32px);
+  overflow: auto;
+  padding: 20px;
+  border: 2px solid var(--pixel-border);
+  background: var(--pixel-panel, #162132);
+  color: var(--pixel-text);
+  font: 14px/1.55 var(--pixel-font-chat, sans-serif);
+  box-shadow: 6px 6px 0 #0008;
+  overflow-wrap: anywhere;
+}
+.review-dialog h2,
+.backend-management h3 {
+  margin: 0;
+  font-size: 16px;
+}
+.control-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+}
+.control-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+.review-dialog pre {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  padding: 12px;
+  background: #0004;
+  font-size: 13px;
+}
+.review-dialog fieldset {
+  margin: 14px 0;
+  padding: 12px;
+  min-width: 0;
+  border: 1px solid var(--pixel-border);
+}
+.review-choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin: 8px 0;
+}
+.review-choice small,
+.review-row span,
+.review-row small {
+  display: block;
+}
+.review-dialog textarea,
+.backend-management input,
+.backend-management select {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  padding: 8px;
+  border: 1px solid var(--pixel-border);
+  background: #0004;
+  color: var(--pixel-text);
+  font: inherit;
+}
+.review-row {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: 12px;
+  margin: 8px 0;
+  border: 1px solid var(--pixel-border);
+  background: #0002;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.control-note {
+  color: var(--pixel-muted);
+  font-size: 12px;
+}
+.backend-management {
+  padding: 16px;
+  border-top: 1px solid var(--pixel-border);
+  font: 13px/1.5 var(--pixel-font-chat, sans-serif);
+  overflow-wrap: anywhere;
+}
+.backend-management label {
+  display: block;
+  margin-top: 10px;
+}
+.backend-management details {
+  margin: 12px 0;
+}
+.backend-management .control-actions .pixel-button,
+.review-dialog .pixel-button {
+  font-size: 10px;
+  line-height: 1.5;
+  min-height: 34px;
+}
