@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-10-27",
+  "applicationVersion": "0.5.0",
+  "codeCommit": "e4388c990f2260ccbbbc2941f243eb90929bbb8e",
+  "purpose": "Sanitized index of existing real-provider demo evidence; no new execution was created for this manifest.",
+  "primaryRun": {
+    "taskId": "demo_latency_1793055181908",
+    "provider": "OpenClaw gateway",
+    "backendAgentId": "main",
+    "seatId": "seat-0",
+    "sessionKey": "agent:main:e5362959-0931-4a58-b1a4-9915d0b73ca6",
+    "reproductionPath": "/app/chat?seat=seat-0&session=agent%3Amain%3Ae5362959-0931-4a58-b1a4-9915d0b73ca6",
+    "roleActuallyExecuted": "general worker assigned to Alice",
+    "sourceOperations": [],
+    "inputScope": "Five user-supplied latency samples: 10, 20, 30, 40, 100 ms",
+    "recordedResult": {
+      "meanMs": 40,
+      "nearestRankP95Ms": 100,
+      "nearestRankP99Ms": 100
+    },
+    "verification": "Arithmetic is independently reproducible; five samples do not establish production performance.",
+    "recovery": "The same saved report remained visible after browser reload in its dedicated conversation.",
+    "evidence": "This sanitized primaryRun record is the checked-in handoff; the private SQLite database and provider payloads are intentionally excluded."
+  },
+  "supportingGroupRun": {
+    "turnId": "release_audit_20261027",
+    "provider": "OpenClaw gateway",
+    "participantCount": 4,
+    "distinctBackendAgents": 1,
+    "taskIds": [
+      "grp_release_audit_20261027_0",
+      "grp_release_audit_20261027_1",
+      "grp_release_audit_20261027_2",
+      "grp_release_audit_20261027_3"
+    ],
+    "lifecycle": "Four completed tasks with four persisted events each.",
+    "verificationResult": "Execution completed; outcome was not independently verified.",
+    "evidence": "docs/evidence/team-demo-20261027.json"
+  },
+  "sponsorWorkflow": {
+    "zetarisRead": "not present in either recorded core run",
+    "meterlessExecution": "not present in either recorded core run",
+    "combinedAcceptance": "pending",
+    "evidence": "README.md#sponsor-architecture-one-decision-pipeline"
+  },
+  "sanitization": {
+    "credentialsIncluded": false,
+    "rawPrivateDatabaseIncluded": false,
+    "rawProviderPayloadsIncluded": false
+  }
+}

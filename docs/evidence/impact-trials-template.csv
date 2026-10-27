@@ -1,0 +1,1 @@
+case_id,trial,arm,operator_alias,order,source_snapshot_id,provider_model,start_utc,end_utc,setup_seconds,review_seconds,human_steps,cited_claims,total_checkable_claims,correct,unresolved,contradictions_detected,incorrect_claims,completion_success,duplicate_dispatches,recovery_result,usefulness_rating_1_to_5,cost_if_available,notes

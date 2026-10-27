@@ -1,0 +1,52 @@
+{
+  "turnId": "release_audit_20261027",
+  "submittedAt": "2026-10-26T23:37:33.338Z",
+  "checkedAt": "2026-10-26T23:39:59.068Z",
+  "participantCount": 4,
+  "distinctBackendAgents": 1,
+  "tasks": [
+    {
+      "taskId": "grp_release_audit_20261027_0",
+      "seatId": "seat-0",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "status": "completed",
+      "eventCount": 4,
+      "resultChars": 596,
+      "resultSha256": "887af98b1920471c668c3294457e443d7b0051e8b863b3521e0408e9ad3ca9f5"
+    },
+    {
+      "taskId": "grp_release_audit_20261027_1",
+      "seatId": "seat-1",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "status": "completed",
+      "eventCount": 4,
+      "resultChars": 609,
+      "resultSha256": "c93602697eaac44a2db0566d4682981c71271567e16034b36ab97370a94037cd"
+    },
+    {
+      "taskId": "grp_release_audit_20261027_2",
+      "seatId": "seat-2",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "status": "completed",
+      "eventCount": 4,
+      "resultChars": 583,
+      "resultSha256": "a30574a04e14999ef2be7f19fd1f36d11d45a89084d827e27daf8a02721e5030"
+    },
+    {
+      "taskId": "grp_release_audit_20261027_3",
+      "seatId": "seat-3",
+      "agentId": "main",
+      "sessionKey": "agent:main:main",
+      "status": "completed",
+      "eventCount": 4,
+      "resultChars": 650,
+      "resultSha256": "ad8d10f9c64a645998689e1b40a0440beffb8bcaf7a7a483c8f68f0e5087b52f"
+    }
+  ],
+  "executionCompleted": true,
+  "outcomeIndependentlyVerified": false,
+  "scope": "Real sequential group contributions, not independent specialist verification or sponsor evidence."
+}
