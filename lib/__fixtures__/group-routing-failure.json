@@ -1,0 +1,35 @@
+{
+  "inspectedBeforeImplementation": true,
+  "turnId": "19b1dc675b114dd2be63208bc361cfeb",
+  "messageId": "group_user_19b1dc675b114dd2be63208bc361cfeb",
+  "createdAt": "2026-10-27T05:43:35.717Z",
+  "request": "Using the connected NY_TAXI dataset, show the top 5 pickup zones by trip count between 22:00 and 06:00. Use live Zetaris queries. Include zone names, trip counts, source references, and evidence IDs. Do not modify data. If the query cannot run, report the exact blocker; do not invent results.",
+  "source": "Read-only inspection of the configured SQLite database; no turn replayed or data changed.",
+  "persistedOfficeIntent": null,
+  "reproducedClassification": "ordinary",
+  "participants": 7,
+  "dispatch": {
+    "taskIds": [
+      "grp_19b1dc675b114dd2be63208bc361cfeb_0",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_1",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_2",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_3",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_4",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_5",
+      "grp_19b1dc675b114dd2be63208bc361cfeb_6"
+    ],
+    "completedTasks": 7,
+    "distinctBackendAgents": 1,
+    "agentId": "main",
+    "sessionKey": "agent:main:main",
+    "gatewayId": "bdaf90b793645d1895a909da1f747ab966114ccaad19730f209961bed77e1aa9",
+    "providerAttribution": "Persisted gateway ID matches the configured Nightshift endpoint and gpt-4o-mini model hash. Seven distinct run IDs and completed responses are persisted. Raw HTTP request/response logs were not available in this trace.",
+    "promptPrefix": "Office request:",
+    "lastCompletedAt": "2026-10-27T05:43:56.293Z"
+  },
+  "linkedRuntimeRecordsContainingTurnId": 0,
+  "dataReadAuditsInTurnMinute": 0,
+  "cause": "specialistIntent only accepts explicit team/specialist command prefixes. This request matches none. classifyOfficeIntent only recognizes inventory-shortage investigations; NY_TAXI analytics matches neither its inventory nor investigation patterns. The ordinary branch omits officeIntent, retains all seven participants and schedules generic chat.send tasks rather than invoking the composer, Team Lead or Zetaris reader.",
+  "consequence": "Seven conversational suggestions, not an executed analytics investigation. This trace does not establish a Zetaris credential, endpoint or query failure: no Zetaris read was dispatched.",
+  "scope": "Steps 1 and 2: record failure and register service capabilities/status. Analytics intent-routing changes and a live query replay are not included."
+}
