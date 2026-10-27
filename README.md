@@ -233,7 +233,7 @@ Three rules shape the implementation:
 
 ## Proof, not promises
 
-The current code at commit [`e4388c9`](https://github.com/rajatnagda45/agent-town/commit/e4388c990f2260ccbbbc2941f243eb90929bbb8e) passes GitHub CI and the full local release gate.
+The current code at commit [`31d585e`](https://github.com/rajatnagda45/agent-town/commit/31d585ebed76b2e764591825fea096eb17504aa5) passes GitHub CI and the full local release gate.
 
 | Evidence                                                                         | Result                                 | What it proves                                                                                                                        |
 | -------------------------------------------------------------------------------- | -------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
