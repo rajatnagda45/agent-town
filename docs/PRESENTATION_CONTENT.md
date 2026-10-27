@@ -1,5 +1,7 @@
 # Agent Town — slide content
 
+**Published artifacts:** [Demo video (YouTube)](https://www.youtube.com/watch?v=IDXVoASphbE) · [Final presentation (Google Slides)](https://docs.google.com/presentation/d/1blDIW1iIX8goXpgb4I0Vs2by3PVkQsdm/edit?usp=sharing)
+
 Eight-slide content and visual direction, not a finished slide deck. Use a dark background, warm gold accents and the existing product screenshots. One message per slide; keep evidence readable. Use the actual final check results in the scorecard rather than copying stale numbers.
 
 ## 1. An answer still needs a review

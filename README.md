@@ -10,7 +10,7 @@
 [![Version](https://img.shields.io/badge/version-0.5.0-6366f1)](package.json)
 [![Node.js](https://img.shields.io/badge/Node.js-%E2%89%A522.19.0-339933)](.node-version)
 
-[See the product](#one-request-a-coordinated-team-of-ai-workers) · [Watch the demo](#demo) · [Run locally](#quick-start) · [Sponsor architecture](#sponsor-architecture-one-decision-pipeline) · [Inspect the proof](#proof-not-promises)
+[See the product](#one-request-a-coordinated-team-of-ai-workers) · [Watch the demo](https://www.youtube.com/watch?v=IDXVoASphbE) · [Presentation](https://docs.google.com/presentation/d/1blDIW1iIX8goXpgb4I0Vs2by3PVkQsdm/edit?usp=sharing) · [Run locally](#quick-start) · [Sponsor architecture](#sponsor-architecture-one-decision-pipeline) · [Inspect the proof](#proof-not-promises)
 
 </div>
 
@@ -111,11 +111,13 @@ The included supplier records are explicitly **synthetic demonstration data**, i
 
 ## Demo
 
-> 🎬 **Final demo video reserved here.** The reviewed video link will replace this note before submission.
+🎬 **Watch the demo:** **[Agent Town — full walkthrough on YouTube](https://www.youtube.com/watch?v=IDXVoASphbE)**
 
-<!-- DEMO_VIDEO: Replace this note with the final public 1–4 minute video link. -->
+📊 **Presentation:** **[Agent Town slide deck (Google Slides)](https://docs.google.com/presentation/d/1blDIW1iIX8goXpgb4I0Vs2by3PVkQsdm/edit?usp=sharing)**
 
-Until then, use the [timed walkthrough and shot list](docs/DEMO_SCRIPT.md), [reproduction runbook](docs/DEMO_RUNBOOK.md), or [supplier decision demo](docs/DEMO_SUPPLIER.md). The sanitized [demo evidence manifest](docs/evidence/demo-manifest-20261027.json) identifies the existing real-provider tasks without distributing the private runtime database. The [animated walkthrough](public/demo/index.html) is a scripted product illustration, not a substitute for the final video or a provider-execution claim.
+[![Watch the Agent Town demo](https://img.youtube.com/vi/IDXVoASphbE/maxresdefault.jpg)](https://www.youtube.com/watch?v=IDXVoASphbE)
+
+For more depth, use the [timed walkthrough and shot list](docs/DEMO_SCRIPT.md), [reproduction runbook](docs/DEMO_RUNBOOK.md), or [supplier decision demo](docs/DEMO_SUPPLIER.md). The sanitized [demo evidence manifest](docs/evidence/demo-manifest-20261027.json) identifies the existing real-provider tasks without distributing the private runtime database. The [animated walkthrough](public/demo/index.html) is a scripted product illustration, not a substitute for the final video or a provider-execution claim.
 
 ### Suggested three-minute judge path
 
@@ -339,6 +341,7 @@ After building, `pnpm phase3:check` runs isolated browser acceptance with mocked
 
 ## Submission resources
 
+- [Demo video (YouTube)](https://www.youtube.com/watch?v=IDXVoASphbE) · [Presentation (Google Slides)](https://docs.google.com/presentation/d/1blDIW1iIX8goXpgb4I0Vs2by3PVkQsdm/edit?usp=sharing)
 - [Demo script](docs/DEMO_SCRIPT.md) · [demo runbook](docs/DEMO_RUNBOOK.md) · [supplier scenario](docs/DEMO_SUPPLIER.md)
 - [Presentation content](docs/PRESENTATION_CONTENT.md)
 - [Sanitized demo manifest](docs/evidence/demo-manifest-20261027.json) · [sponsor integration contract](docs/zetaris-installed-contract.md)
