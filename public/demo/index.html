@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1280">
+<title>Agent Town — Demo</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --bg:       #0d0b14;
+    --panel:    #16131f;
+    --border:   #2a2540;
+    --border2:  #3a3060;
+    --gold:     #c9a227;
+    --gold2:    #f0c040;
+    --green:    #4ade80;
+    --red:      #f87171;
+    --yellow:   #fbbf24;
+    --blue:     #60a5fa;
+    --purple:   #a78bfa;
+    --text:     #e2dff8;
+    --muted:    #6b6890;
+    --running:  #fbbf24;
+    --done:     #4ade80;
+    --fail:     #f87171;
+  }
+
+  body {
+    background: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    font-family: 'Press Start 2P', monospace;
+  }
+
+  #stage {
+    width: 1280px;
+    height: 720px;
+    background: var(--bg);
+    position: relative;
+    overflow: hidden;
+    image-rendering: pixelated;
+  }
+
+  /* ─── SCENE WRAPPER ─── */
+  .scene {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s;
+  }
+  .scene.active { opacity: 1; pointer-events: all; }
+
+  /* ─── TOP HUD BAR ─── */
+  .hud-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 48px;
+    background: var(--panel);
+    border-bottom: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    gap: 12px;
+    z-index: 10;
+  }
+  .hud-title {
+    font-size: 10px;
+    color: var(--gold);
+    letter-spacing: 2px;
+  }
+  .hud-pills {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+  .pill {
+    font-size: 8px;
+    background: var(--border);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    padding: 4px 10px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .pill .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--muted);
+  }
+  .pill .dot.idle   { background: var(--muted); }
+  .pill .dot.run    { background: var(--running); animation: pulse 1s infinite; }
+  .pill .dot.done   { background: var(--done); }
+  .pill .dot.fail   { background: var(--fail); }
+  .pill .dot.online { background: var(--green); }
+
+  .hud-icons {
+    display: flex;
+    gap: 6px;
+    margin-left: 8px;
+  }
+  .hud-icon {
+    width: 32px; height: 32px;
+    background: var(--border);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .status-indicator {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 8px;
+    color: var(--green);
+    margin-left: 16px;
+  }
+
+  /* ─── BOTTOM HUD BAR ─── */
+  .hud-bottom {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 36px;
+    background: var(--panel);
+    border-top: 2px solid var(--border);
+    display: flex;
+    align-items: center;
+    padding: 0 16px;
+    font-size: 8px;
+    color: var(--muted);
+    gap: 24px;
+    z-index: 10;
+  }
+  .hud-bottom .highlight { color: var(--gold); }
+
+  /* ─── GAME WORLD ─── */
+  .game-world {
+    position: absolute;
+    top: 48px; bottom: 36px; left: 0; right: 0;
+    background: #1a1628;
+    overflow: hidden;
+  }
+
+  /* floor tiles */
+  .floor {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+
+  /* walls */
+  .wall-top {
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 96px;
+    background: #221e35;
+    border-bottom: 3px solid #3a3060;
+  }
+  .wall-left {
+    position: absolute;
+    top: 0; bottom: 0; left: 0;
+    width: 48px;
+    background: #221e35;
+    border-right: 3px solid #3a3060;
+  }
+  .wall-right {
+    position: absolute;
+    top: 0; bottom: 0; right: 0;
+    width: 48px;
+    background: #221e35;
+    border-left: 3px solid #3a3060;
+  }
+
+  /* ─── DESK ─── */
+  .desk-container {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+  }
+  .desk {
+    width: 96px; height: 48px;
+    background: #2e2a45;
+    border: 2px solid #4a4470;
+    position: relative;
+  }
+  .desk::before {
+    content: '';
+    position: absolute;
+    top: 6px; left: 8px;
+    width: 32px; height: 20px;
+    background: #1a3a6b;
+    border: 1px solid #2a5aab;
+  }
+  .desk::after {
+    content: '';
+    position: absolute;
+    top: 8px; right: 10px;
+    width: 12px; height: 12px;
+    background: #3a3060;
+    border: 1px solid #5a50a0;
+    border-radius: 50%;
+  }
+  .worker-sprite {
+    font-size: 24px;
+    animation: idle-bob 2s infinite;
+    position: relative;
+  }
+  .worker-name {
+    font-size: 6px;
+    color: var(--gold);
+    background: rgba(0,0,0,0.6);
+    padding: 2px 5px;
+    border: 1px solid var(--border2);
+    white-space: nowrap;
+  }
+  .worker-status {
+    font-size: 6px;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--muted);
+  }
+  .emote-bubble {
+    position: absolute;
+    top: -32px;
+    background: rgba(22,19,31,0.95);
+    border: 1px solid var(--border2);
+    padding: 3px 7px;
+    font-size: 10px;
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .emote-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--border2);
+  }
+
+  /* ─── PLAYER ─── */
+  .player {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    transition: left 1.5s, top 1.5s;
+  }
+  .player-sprite { font-size: 28px; }
+  .player-label  { font-size: 6px; color: var(--gold2); }
+
+  /* ─── PRESS E PROMPT ─── */
+  .press-e {
+    position: absolute;
+    background: rgba(37,34,25,0.95);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    font-size: 9px;
+    padding: 5px 10px;
+    pointer-events: none;
+    white-space: nowrap;
+    animation: press-e-fade 0.4s ease-out;
+  }
+  .press-e-arrow {
+    position: absolute;
+    font-size: 14px;
+    color: var(--gold);
+    animation: bounce-up 0.6s infinite;
+  }
+
+  /* ─── TASK DIALOG ─── */
+  .task-dialog {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 480px;
+    background: var(--panel);
+    border: 2px solid var(--border2);
+    z-index: 20;
+    animation: dialog-in 0.3s ease-out;
+  }
+  .dialog-title {
+    background: var(--border);
+    padding: 10px 14px;
+    font-size: 9px;
+    color: var(--gold);
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--border2);
+  }
+  .dialog-close {
+    color: var(--muted);
+    font-size: 9px;
+  }
+  .dialog-body { padding: 16px; }
+  .task-input {
+    width: 100%;
+    background: #0d0b14;
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 10px;
+    min-height: 60px;
+    resize: none;
+    line-height: 1.8;
+  }
+  .dialog-footer {
+    padding: 12px 16px;
+    display: flex;
+    justify-content: flex-end;
+    border-top: 2px solid var(--border);
+  }
+  .btn-assign {
+    background: var(--gold);
+    color: #000;
+    font-family: 'Press Start 2P', monospace;
+    font-size: 8px;
+    padding: 8px 16px;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* ─── CHAT PANEL ─── */
+  .chat-panel {
+    position: absolute;
+    bottom: 0; right: 0;
+    width: 380px;
+    height: 340px;
+    background: var(--panel);
+    border-left: 2px solid var(--border2);
+    border-top: 2px solid var(--border2);
+    display: flex;
+    flex-direction: column;
+    z-index: 15;
+    animation: panel-slide-in 0.4s ease-out;
+  }
+  .panel-header {
+    background: var(--border);
+    padding: 8px 12px;
+    font-size: 8px;
+    color: var(--gold);
+    border-bottom: 2px solid var(--border2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+  }
+  .panel-messages {
+    flex: 1;
+    overflow: hidden;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .msg {
+    font-size: 7px;
+    line-height: 1.7;
+    color: var(--text);
+  }
+  .msg.system { color: var(--muted); font-style: italic; }
+  .msg.task-label {
+    color: var(--gold);
+    border-left: 2px solid var(--gold);
+    padding-left: 8px;
+  }
+  .msg-role { color: var(--purple); margin-right: 6px; }
+  .msg-tool {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: #0d0b14;
+    border: 1px solid var(--border2);
+    padding: 3px 7px;
+    font-size: 7px;
+    color: var(--blue);
+    margin: 2px 0;
+  }
+  .msg-check { color: var(--green); float: right; }
+  .msg-ts { color: var(--muted); font-size: 7px; }
+
+  /* ─── SPEECH BUBBLE ─── */
+  .speech-bubble {
+    position: absolute;
+    background: rgba(22,19,31,0.97);
+    border: 1px solid var(--border2);
+    padding: 6px 10px;
+    font-size: 7px;
+    color: var(--text);
+    white-space: nowrap;
+    max-width: 180px;
+    white-space: normal;
+    z-index: 12;
+    animation: bubble-in 0.3s ease-out;
+  }
+  .speech-bubble::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: var(--border2);
+  }
+
+  /* ─── TASK PANEL ─── */
+  .task-panel {
+    position: absolute;
+    top: 60px; right: 0;
+    width: 380px;
+    background: var(--panel);
+    border-left: 2px solid var(--border2);
+    border-bottom: 2px solid var(--border2);
+    z-index: 15;
+    animation: panel-slide-in 0.4s ease-out;
+  }
+  .task-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-bottom: 1px solid var(--border);
+    font-size: 7px;
+  }
+  .task-row:last-child { border-bottom: none; }
+  .task-agent { color: var(--gold); width: 50px; flex-shrink: 0; }
+  .task-msg { color: var(--text); flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .task-status { width: 55px; flex-shrink: 0; display: flex; align-items: center; gap: 4px; }
+  .task-status.running { color: var(--running); }
+  .task-status.done    { color: var(--done); }
+  .task-status.fail    { color: var(--fail); }
+  .task-time { color: var(--muted); width: 55px; flex-shrink: 0; text-align: right; }
+  .status-icon { font-size: 8px; }
+
+  /* ─── OBSERVABILITY PANEL ─── */
+  .obs-panel {
+    position: absolute;
+    top: 60px; right: 0;
+    width: 380px;
+    background: var(--panel);
+    border-left: 2px solid var(--border2);
+    border-bottom: 2px solid var(--border2);
+    z-index: 15;
+    animation: panel-slide-in 0.4s ease-out;
+  }
+  .obs-section { padding: 10px 12px; border-bottom: 1px solid var(--border); }
+  .obs-label { font-size: 7px; color: var(--muted); margin-bottom: 7px; letter-spacing: 1px; }
+  .obs-task-card {
+    background: #0d0b14;
+    border: 1px solid var(--border2);
+    padding: 8px 10px;
+    font-size: 7px;
+    color: var(--text);
+    line-height: 1.8;
+  }
+  .obs-task-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 6px;
+  }
+  .obs-stop {
+    background: #3a1a1a;
+    border: 1px solid var(--fail);
+    color: var(--fail);
+    font-family: 'Press Start 2P', monospace;
+    font-size: 6px;
+    padding: 4px 8px;
+    cursor: pointer;
+  }
+  .obs-timeline { padding: 8px 12px; border-bottom: 1px solid var(--border); max-height: 130px; overflow: hidden; }
+  .obs-tl-item {
+    display: grid;
+    grid-template-columns: 14px 56px 1fr;
+    gap: 6px;
+    font-size: 7px;
+    margin-bottom: 5px;
+    line-height: 1.5;
+  }
+  .obs-tl-icon { text-align: center; }
+  .obs-tl-time { color: var(--muted); }
+  .obs-tl-text { color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .obs-history { padding: 8px 12px; }
+  .obs-hist-item {
+    display: flex;
+    gap: 8px;
+    font-size: 7px;
+    margin-bottom: 5px;
+    align-items: center;
+  }
+  .obs-hist-icon.done { color: var(--done); }
+  .obs-hist-icon.fail { color: var(--fail); }
+  .obs-hist-msg { flex: 1; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .obs-hist-time { color: var(--muted); }
+
+  /* ─── STEP LABEL ─── */
+  .step-label {
+    position: absolute;
+    bottom: 44px; left: 16px;
+    font-size: 7px;
+    color: var(--gold);
+    background: rgba(0,0,0,0.7);
+    padding: 4px 8px;
+    border: 1px solid var(--border2);
+    z-index: 20;
+    animation: fade-in 0.5s ease-out;
+  }
+
+  /* ─── PROGRESS BAR ─── */
+  .progress-bar {
+    position: absolute;
+    bottom: 36px; left: 0; right: 0;
+    height: 3px;
+    background: var(--border);
+    z-index: 30;
+  }
+  .progress-fill {
+    height: 100%;
+    background: var(--gold);
+    transition: width 0.5s linear;
+  }
+
+  /* ─── TITLE SCENE ─── */
+  .title-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    gap: 24px;
+  }
+  .title-logo {
+    font-size: 36px;
+    color: var(--gold);
+    text-shadow: 4px 4px 0 #7a5a00, 0 0 40px rgba(201,162,39,0.4);
+    letter-spacing: 4px;
+    animation: title-glow 2s infinite alternate;
+  }
+  .title-sub {
+    font-size: 9px;
+    color: var(--muted);
+    letter-spacing: 2px;
+    text-align: center;
+    max-width: 500px;
+    line-height: 2;
+  }
+  .title-badge {
+    display: flex;
+    gap: 12px;
+    margin-top: 8px;
+  }
+  .badge {
+    font-size: 7px;
+    background: var(--border);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    padding: 5px 10px;
+  }
+  .title-press {
+    font-size: 8px;
+    color: var(--gold2);
+    animation: blink 1s infinite;
+    margin-top: 16px;
+  }
+
+  /* ─── DECORATIVE ITEMS ─── */
+  .plant  { font-size: 28px; position: absolute; }
+  .shelf  { position: absolute; width: 80px; height: 16px; background: #2e2a45; border: 2px solid #4a4470; }
+  .pc     { position: absolute; width: 48px; height: 32px; }
+
+  /* ─── CURSOR BLINK ─── */
+  .cursor { animation: blink 0.7s step-end infinite; }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes idle-bob {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-3px); }
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.4; }
+  }
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0; }
+  }
+  @keyframes bounce-up {
+    0%, 100% { transform: translateY(0); }
+    50%       { transform: translateY(-5px); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes dialog-in {
+    from { opacity: 0; transform: translate(-50%, -46%); }
+    to   { opacity: 1; transform: translate(-50%, -50%); }
+  }
+  @keyframes panel-slide-in {
+    from { opacity: 0; transform: translateX(20px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+  @keyframes bubble-in {
+    from { opacity: 0; transform: scale(0.8); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+  @keyframes title-glow {
+    from { text-shadow: 4px 4px 0 #7a5a00, 0 0 20px rgba(201,162,39,0.3); }
+    to   { text-shadow: 4px 4px 0 #7a5a00, 0 0 60px rgba(201,162,39,0.7); }
+  }
+  @keyframes walk-right {
+    0%   { transform: scaleX(1); }
+    49%  { transform: scaleX(1); }
+    50%  { transform: scaleX(-1); }
+    100% { transform: scaleX(-1); }
+  }
+  @keyframes typing {
+    from { width: 0; }
+    to   { width: 100%; }
+  }
+  @keyframes press-e-fade {
+    from { opacity: 0; transform: translateY(-4px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes stream-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+</style>
+</head>
+<body>
+<div role="note" style="position:fixed;top:0;left:0;right:0;z-index:99999;padding:8px;background:#172021;color:#f4cf88;text-align:center;font:14px sans-serif">Illustrative scripted walkthrough — no live provider execution. <a href="/app/chat" style="color:inherit;text-decoration:underline">Open the real workspace</a></div>
+
+<div id="stage">
+
+  <!-- PROGRESS BAR -->
+  <div class="progress-bar">
+    <div class="progress-fill" id="progress" style="width:0%"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 0: TITLE                                         -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene active" id="s0">
+    <div class="title-content">
+      <div style="font-size:56px; animation: idle-bob 3s infinite">🏙️</div>
+      <div class="title-logo">AGENT TOWN</div>
+      <div class="title-sub">
+        A pixel-art office where your AI agents<br>
+        live, work, and collaborate in real time
+      </div>
+      <div class="title-badge">
+        <div class="badge">⚡ Next.js 16</div>
+        <div class="badge">🎮 Phaser 3</div>
+        <div class="badge">🤖 OpenClaw</div>
+        <div class="badge">📡 WebSocket</div>
+      </div>
+      <div class="title-press">▶  DEMO STARTING…</div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 1: THE OFFICE — IDLE                             -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s1">
+    <!-- HUD TOP -->
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill"><div class="dot idle"></div>Alice</div>
+        <div class="pill"><div class="dot idle"></div>Bob</div>
+        <div class="pill"><div class="dot idle"></div>Carol</div>
+      </div>
+      <div class="hud-icons">
+        <div class="hud-icon">💬</div>
+        <div class="hud-icon">📋</div>
+        <div class="hud-icon">👥</div>
+        <div class="hud-icon">🔌</div>
+      </div>
+      <div class="status-indicator"><div class="dot online" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <!-- GAME WORLD -->
+    <div class="game-world">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+      <div class="wall-left"></div>
+      <div class="wall-right"></div>
+      <!-- Plants -->
+      <div class="plant" style="top:100px;left:80px">🌿</div>
+      <div class="plant" style="top:100px;right:80px">🌿</div>
+      <!-- Shelves -->
+      <div class="shelf" style="top:108px;left:160px"></div>
+      <div class="shelf" style="top:108px;left:260px"></div>
+      <div class="shelf" style="top:108px;right:160px"></div>
+      <!-- Alice desk -->
+      <div class="desk-container" style="position:absolute;top:180px;left:200px">
+        <div class="emote-bubble">💤 Zzz…</div>
+        <div class="worker-sprite">👩‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name">Alice</div>
+        <div class="worker-status"><div class="dot idle" style="width:6px;height:6px;border-radius:50%;background:var(--muted)"></div>idle</div>
+      </div>
+      <!-- Bob desk -->
+      <div class="desk-container" style="position:absolute;top:180px;left:590px">
+        <div class="emote-bubble">🎵 ~♪~</div>
+        <div class="worker-sprite">👨‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name">Bob</div>
+        <div class="worker-status"><div class="dot idle" style="width:6px;height:6px;border-radius:50%;background:var(--muted)"></div>idle</div>
+      </div>
+      <!-- Carol desk -->
+      <div class="desk-container" style="position:absolute;top:180px;left:970px">
+        <div class="emote-bubble">🤔 Hmm…</div>
+        <div class="worker-sprite">👩‍💼</div>
+        <div class="desk"></div>
+        <div class="worker-name">Carol</div>
+        <div class="worker-status"><div class="dot idle" style="width:6px;height:6px;border-radius:50%;background:var(--muted)"></div>idle</div>
+      </div>
+      <!-- Player (bottom center) -->
+      <div class="player" id="player1" style="left:560px;top:450px">
+        <div class="player-sprite">🧑‍💼</div>
+        <div class="player-label">YOU (Boss)</div>
+      </div>
+    </div>
+    <!-- HUD BOTTOM -->
+    <div class="hud-bottom">
+      <span>Use <span class="highlight">WASD</span> / Arrow Keys to move</span>
+      <span>Press <span class="highlight">E</span> near a worker to assign a task</span>
+      <span class="highlight">Session 1</span>
+    </div>
+    <div class="step-label">Step 1 — The Office (0:00–0:10)</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 2: WALKING TOWARD ALICE                          -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s2">
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill"><div class="dot idle"></div>Alice</div>
+        <div class="pill"><div class="dot idle"></div>Bob</div>
+        <div class="pill"><div class="dot idle"></div>Carol</div>
+      </div>
+      <div class="hud-icons">
+        <div class="hud-icon">💬</div>
+        <div class="hud-icon">📋</div>
+        <div class="hud-icon">👥</div>
+        <div class="hud-icon">🔌</div>
+      </div>
+      <div class="status-indicator"><div class="dot online" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <div class="game-world">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+      <div class="wall-left"></div>
+      <div class="wall-right"></div>
+      <div class="plant" style="top:100px;left:80px">🌿</div>
+      <div class="plant" style="top:100px;right:80px">🌿</div>
+      <div class="shelf" style="top:108px;left:160px"></div>
+      <!-- Alice desk with PRESS E prompt -->
+      <div class="desk-container" style="position:absolute;top:180px;left:200px">
+        <div class="press-e" style="top:-22px;left:-20px">[ E ] Talk to Alice</div>
+        <div class="press-e-arrow" style="top:10px;left:60px">↓</div>
+        <div class="worker-sprite">👩‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name">Alice</div>
+        <div class="worker-status"><div class="dot idle" style="width:6px;height:6px;border-radius:50%;background:var(--muted)"></div>idle</div>
+      </div>
+      <!-- Bob -->
+      <div class="desk-container" style="position:absolute;top:180px;left:590px">
+        <div class="worker-sprite">👨‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name">Bob</div>
+      </div>
+      <!-- Carol -->
+      <div class="desk-container" style="position:absolute;top:180px;left:970px">
+        <div class="worker-sprite">👩‍💼</div>
+        <div class="desk"></div>
+        <div class="worker-name">Carol</div>
+      </div>
+      <!-- Player near Alice -->
+      <div class="player" id="player2" style="left:270px;top:320px">
+        <div class="player-sprite" style="animation: walk-right 0.3s infinite">🧑‍💼</div>
+        <div class="player-label">YOU</div>
+      </div>
+    </div>
+    <div class="hud-bottom">
+      <span>Approached <span class="highlight">Alice</span> — press <span class="highlight">E</span> to open task dialogue</span>
+    </div>
+    <div class="step-label">Step 2 — Assign a Task (0:10–0:25)</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 3: TASK DIALOG                                   -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s3">
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill"><div class="dot idle"></div>Alice</div>
+        <div class="pill"><div class="dot idle"></div>Bob</div>
+        <div class="pill"><div class="dot idle"></div>Carol</div>
+      </div>
+      <div class="status-indicator" style="margin-left:auto"><div class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <div class="game-world" style="filter: brightness(0.5)">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+    </div>
+    <!-- Dialog -->
+    <div class="task-dialog">
+      <div class="dialog-title">
+        <span>Assign task to Alice</span>
+        <span class="dialog-close">[ × ]</span>
+      </div>
+      <div class="dialog-body">
+        <textarea class="task-input" id="taskInput" readonly>Summarize the latest changes in README.md and list the 3 most important sections<span class="cursor">_</span></textarea>
+      </div>
+      <div class="dialog-footer">
+        <button class="btn-assign" id="assignBtn">[ Assign ]</button>
+      </div>
+    </div>
+    <div class="step-label">Step 2 — Type the task and press Assign</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 4: ALICE WORKING + CHAT PANEL                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s4">
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill" style="border-color:var(--running)"><div class="dot run"></div>Alice</div>
+        <div class="pill"><div class="dot idle"></div>Bob</div>
+        <div class="pill"><div class="dot idle"></div>Carol</div>
+      </div>
+      <div class="hud-icons">
+        <div class="hud-icon" style="background:var(--border2)">💬</div>
+        <div class="hud-icon">📋</div>
+        <div class="hud-icon">👥</div>
+        <div class="hud-icon">🔌</div>
+      </div>
+      <div class="status-indicator"><div class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <div class="game-world">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+      <div class="wall-left"></div>
+      <div class="wall-right"></div>
+      <!-- Alice RUNNING -->
+      <div class="desk-container" style="position:absolute;top:180px;left:200px">
+        <div class="speech-bubble" style="top:-52px;left:-10px;font-size:7px">Reading README.md…</div>
+        <div class="worker-sprite" style="animation:idle-bob 0.5s infinite">👩‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name" style="color:var(--running)">Alice ● running</div>
+      </div>
+      <!-- Bob -->
+      <div class="desk-container" style="position:absolute;top:180px;left:590px">
+        <div class="worker-sprite">👨‍💻</div>
+        <div class="desk"></div>
+        <div class="worker-name">Bob</div>
+      </div>
+      <!-- Carol -->
+      <div class="desk-container" style="position:absolute;top:180px;left:970px">
+        <div class="worker-sprite">👩‍💼</div>
+        <div class="desk"></div>
+        <div class="worker-name">Carol</div>
+      </div>
+    </div>
+    <!-- CHAT PANEL -->
+    <div class="chat-panel">
+      <div class="panel-header">
+        <span>CHAT</span>
+        <span style="color:var(--muted);font-size:7px">Session 1</span>
+      </div>
+      <div class="panel-messages" id="chatMessages">
+        <div class="msg task-label">[TASK]  Summarize README.md… <span class="msg-ts" style="float:right">20:34:08</span></div>
+        <div class="msg" id="cm1" style="opacity:0"><span class="msg-role">Alice ▸</span>I'll read the README file first.</div>
+        <div class="msg" id="cm2" style="opacity:0"><div class="msg-tool">🔧 read_file  README.md</div></div>
+        <div class="msg" id="cm3" style="opacity:0"><span class="msg-role">Alice ▸</span>The README has 3 main sections:</div>
+        <div class="msg" id="cm4" style="opacity:0">1. Quick Start — covers installation…</div>
+        <div class="msg" id="cm5" style="opacity:0">2. Architecture — the system design…</div>
+        <div class="msg" id="cm6" style="opacity:0">3. Contributing — how to submit a PR…<span class="msg-check"> ✓</span></div>
+      </div>
+    </div>
+    <div class="hud-bottom">
+      <span>Alice is <span class="highlight" style="color:var(--running)">running</span> — response streaming live</span>
+    </div>
+    <div class="step-label">Step 3 — Watch Alice Work (0:25–0:50)</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 5: TASK PANEL                                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s5">
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill" style="border-color:var(--running)"><div class="dot run"></div>Alice</div>
+        <div class="pill"><div class="dot done"></div>Bob</div>
+        <div class="pill"><div class="dot fail"></div>Carol</div>
+      </div>
+      <div class="hud-icons">
+        <div class="hud-icon">💬</div>
+        <div class="hud-icon" style="background:var(--border2)">📋</div>
+        <div class="hud-icon">👥</div>
+        <div class="hud-icon">🔌</div>
+      </div>
+      <div class="status-indicator"><div class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <div class="game-world" style="filter:brightness(0.6)">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+    </div>
+    <!-- TASK PANEL -->
+    <div class="task-panel">
+      <div class="panel-header">
+        <span>TASKS</span>
+        <span style="color:var(--muted);font-size:7px">3 tasks</span>
+      </div>
+      <div class="task-row">
+        <div class="task-agent">Alice</div>
+        <div class="task-msg">Summarize README…</div>
+        <div class="task-status running"><span class="status-icon">●</span> running</div>
+        <div class="task-time" id="taskTimer" style="color:var(--running)">⏱ 22s</div>
+      </div>
+      <div class="task-row">
+        <div class="task-agent">Bob</div>
+        <div class="task-msg">Write unit tests for the store</div>
+        <div class="task-status done"><span class="status-icon">✓</span> done</div>
+        <div class="task-time">2m ago</div>
+      </div>
+      <div class="task-row">
+        <div class="task-agent">Carol</div>
+        <div class="task-msg">Deploy to production</div>
+        <div class="task-status fail"><span class="status-icon">✗</span> failed</div>
+        <div class="task-time">8m ago</div>
+      </div>
+    </div>
+    <div class="hud-bottom">
+      <span>Task panel — all workers visible at a glance</span>
+      <span>Running tasks show <span class="highlight">live elapsed time</span></span>
+    </div>
+    <div class="step-label">Step 4 — Task Panel &amp; Live Timer (0:50–0:55)</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 6: OBSERVABILITY PANEL                           -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s6">
+    <div class="hud-top">
+      <div class="hud-title">AGENT TOWN</div>
+      <div class="hud-pills">
+        <div class="pill" style="border-color:var(--running);background:rgba(251,191,36,0.08)"><div class="dot run"></div>Alice ←</div>
+        <div class="pill"><div class="dot done"></div>Bob</div>
+        <div class="pill"><div class="dot fail"></div>Carol</div>
+      </div>
+      <div class="hud-icons">
+        <div class="hud-icon">💬</div>
+        <div class="hud-icon">📋</div>
+        <div class="hud-icon">👥</div>
+        <div class="hud-icon">🔌</div>
+      </div>
+      <div class="status-indicator"><div class="dot" style="width:8px;height:8px;border-radius:50%;background:var(--green)"></div>Online</div>
+    </div>
+    <div class="game-world" style="filter:brightness(0.6)">
+      <div class="floor"></div>
+      <div class="wall-top"></div>
+    </div>
+    <!-- OBS PANEL -->
+    <div class="obs-panel">
+      <div class="panel-header">
+        <span>Alice  ·  Worker  ·  <span style="color:var(--running)">● RUNNING</span></span>
+        <span style="color:var(--muted);font-size:7px">[ × ]</span>
+      </div>
+      <div class="obs-section">
+        <div class="obs-label">CURRENT TASK</div>
+        <div class="obs-task-card">
+          "Summarize README and list top 3 sections"
+          <div class="obs-task-meta">
+            <span style="color:var(--running)">running  ⏱ <span id="obsTimer">42s</span></span>
+            <button class="obs-stop">[ ■ Stop ]</button>
+          </div>
+        </div>
+      </div>
+      <div class="obs-timeline">
+        <div class="obs-label">ACTIVITY TIMELINE</div>
+        <div class="obs-tl-item"><div class="obs-tl-icon">💬</div><div class="obs-tl-time">20:34:08</div><div class="obs-tl-text">I'll read the README file first.</div></div>
+        <div class="obs-tl-item"><div class="obs-tl-icon">🔧</div><div class="obs-tl-time">20:34:11</div><div class="obs-tl-text">read_file  README.md</div></div>
+        <div class="obs-tl-item"><div class="obs-tl-icon">💬</div><div class="obs-tl-time">20:34:22</div><div class="obs-tl-text">The README has 3 main sections:</div></div>
+        <div class="obs-tl-item"><div class="obs-tl-icon">💬</div><div class="obs-tl-time">20:34:23</div><div class="obs-tl-text">1. Quick Start — covers installation…</div></div>
+      </div>
+      <div class="obs-history">
+        <div class="obs-label">TASK HISTORY  (3 tasks)</div>
+        <div class="obs-hist-item"><span class="obs-hist-icon done">✓</span><div class="obs-hist-msg">Write unit tests for the store</div><div class="obs-hist-time">2m ago</div></div>
+        <div class="obs-hist-item"><span class="obs-hist-icon done">✓</span><div class="obs-hist-msg">Fix authentication bug in gateway</div><div class="obs-hist-time">6m ago</div></div>
+        <div class="obs-hist-item"><span class="obs-hist-icon fail">✗</span><div class="obs-hist-msg">Deploy to production server</div><div class="obs-hist-time">8m ago</div></div>
+      </div>
+    </div>
+    <div class="hud-bottom">
+      <span>Click any agent pill to open the <span class="highlight">Observability Panel</span></span>
+      <span>All data streams from <span class="highlight">live WebSocket</span></span>
+    </div>
+    <div class="step-label">Step 5 — Agent Observability (0:55–1:00)</div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- SCENE 7: OUTRO                                         -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="scene" id="s7">
+    <div class="title-content">
+      <div style="font-size:48px;animation:idle-bob 2s infinite">✅</div>
+      <div class="title-logo" style="font-size:28px">AGENT TOWN</div>
+      <div class="title-sub" style="color:var(--text)">
+        Walk up → Assign → Watch agents work<br>
+        <span style="color:var(--muted)">No forms. No dashboards. Just the office.</span>
+      </div>
+      <div class="title-badge" style="margin-top:16px">
+        <div class="badge" style="color:var(--green)">✓ Real-time WebSocket</div>
+        <div class="badge" style="color:var(--blue)">✓ Multi-agent parallel</div>
+        <div class="badge" style="color:var(--gold)">✓ Live observability</div>
+      </div>
+      <div style="font-size:8px;color:var(--gold2);margin-top:24px;letter-spacing:1px">
+        github.com/rajatnagda45/agent-town
+      </div>
+    </div>
+  </div>
+
+</div><!-- #stage -->
+
+<script>
+// ═══════════════════════════════════════════════════════════
+// TIMELINE  (ms from start)
+// ═══════════════════════════════════════════════════════════
+const SCENES = [
+  { id: 's0', enter: 0,     exit: 2500  },  // title
+  { id: 's1', enter: 2500,  exit: 7500  },  // office idle
+  { id: 's2', enter: 7500,  exit: 12000 },  // walk up
+  { id: 's3', enter: 12000, exit: 18000 },  // task dialog
+  { id: 's4', enter: 18000, exit: 37000 },  // alice working + chat
+  { id: 's5', enter: 37000, exit: 48000 },  // task panel
+  { id: 's6', enter: 48000, exit: 58000 },  // observability
+  { id: 's7', enter: 58000, exit: 65000 },  // outro
+];
+const TOTAL_MS = 65000;
+
+let startTime = null;
+let taskSeconds = 22;
+let obsSeconds  = 42;
+let chatStep = 0;
+const chatTimings = [1000, 2500, 4000, 5500, 7000, 10000]; // relative to scene 4 start
+let scene4StartTime = null;
+
+function setScene(id) {
+  document.querySelectorAll('.scene').forEach(s => s.classList.remove('active'));
+  const el = document.getElementById(id);
+  if (el) el.classList.add('active');
+  if (id === 's4') {
+    scene4StartTime = performance.now();
+    chatStep = 0;
+    ['cm1','cm2','cm3','cm4','cm5','cm6'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.style.opacity = '0';
+    });
+  }
+}
+
+function tick(now) {
+  if (!startTime) startTime = now;
+  const elapsed = now - startTime;
+
+  // Progress bar
+  const pct = Math.min(100, (elapsed / TOTAL_MS) * 100);
+  document.getElementById('progress').style.width = pct + '%';
+
+  // Scene switching
+  for (const s of SCENES) {
+    if (elapsed >= s.enter && elapsed < s.exit) {
+      const active = document.querySelector('.scene.active');
+      if (!active || active.id !== s.id) setScene(s.id);
+    }
+  }
+
+  // Scene 5 — task timer
+  if (document.getElementById('s5').classList.contains('active')) {
+    taskSeconds = 22 + Math.floor((elapsed - 37000) / 1000);
+    const el = document.getElementById('taskTimer');
+    if (el) {
+      const s = taskSeconds;
+      el.textContent = s < 60 ? `⏱ ${s}s` : `⏱ ${Math.floor(s/60)}m ${s%60}s`;
+    }
+  }
+
+  // Scene 6 — obs timer
+  if (document.getElementById('s6').classList.contains('active')) {
+    obsSeconds = 42 + Math.floor((elapsed - 48000) / 1000);
+    const el = document.getElementById('obsTimer');
+    if (el) {
+      const s = obsSeconds;
+      el.textContent = s < 60 ? `${s}s` : `${Math.floor(s/60)}m ${s%60}s`;
+    }
+  }
+
+  // Scene 4 — chat streaming
+  if (scene4StartTime && document.getElementById('s4').classList.contains('active')) {
+    const sceneElapsed = now - scene4StartTime;
+    const msgs = ['cm1','cm2','cm3','cm4','cm5','cm6'];
+    for (let i = 0; i < msgs.length; i++) {
+      if (sceneElapsed >= chatTimings[i]) {
+        const el = document.getElementById(msgs[i]);
+        if (el && el.style.opacity === '0') {
+          el.style.opacity = '1';
+          el.style.animation = 'stream-in 0.4s ease-out';
+        }
+      }
+    }
+  }
+
+  // Loop after outro
+  if (elapsed >= TOTAL_MS) {
+    startTime = now;
+    setScene('s0');
+  }
+
+  requestAnimationFrame(tick);
+}
+
+requestAnimationFrame(tick);
+</script>
+</body>
+</html>
